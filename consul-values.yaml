@@ -1,0 +1,28 @@
+global:
+  name: consul
+  enterpriseLicense:
+    secretName: consul-ent-license
+    secretKey: key
+  tls:
+    enabled: true
+  acls:
+    manageSystemACLs: true
+  gossipEncryption:
+    autoGenerate: true
+server:
+  # Spread servers across AZs.
+  affinity: |
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchLabels:
+              app: {{ template "consul.name" . }}
+              release: "{{ .Release.Name }}"
+              component: server
+          topologyKey: topology.kubernetes.io/zone
+connectInject:
+  enabled: true
+ui:
+  enabled: true
+  service:
+    type: ClusterIP

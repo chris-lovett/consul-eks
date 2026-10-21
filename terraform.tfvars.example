@@ -1,0 +1,3 @@
+region              = "us-west-2"
+name                = "consul-ent"
+consul_license_file = "/path/to/consul.hclic"
